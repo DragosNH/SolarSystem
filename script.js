@@ -3,7 +3,7 @@ import * as THREE from 'three';
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.set(0,0,20);
+camera.position.set(0,0,30);
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -27,6 +27,8 @@ const sunMaterial = new THREE.MeshBasicMaterial({
     map: loader.load('textures/sun.jpg')
 });
 const sun = new THREE.Mesh(sunGeometry, sunMaterial);
+const sunRadius = 5;
+const earthAU = 13.5;
 
 // ------ Mercury ------
 const mercuryGeo = new THREE.SphereGeometry(0.5, 32, 32);
@@ -34,9 +36,12 @@ const mercuryMat = new THREE.MeshLambertMaterial({
     map : loader.load('textures/mercury.jpg')
 });
 const mercury = new THREE.Mesh(mercuryGeo, mercuryMat);
+const mercuryPivot = new THREE.Object3D();
 mercury.castShadow = true;
 mercury.receiveShadow = true;
-mercury.position.x = 8
+mercury.position.x = sunRadius + earthAU * 0.39;
+mercuryPivot.add(mercury);
+mercuryPivot.rotation.z = THREE.MathUtils.degToRad(7); 
 
 // ------ Venus ------
 const venusGeo = new THREE.SphereGeometry(0.8, 32, 32);
@@ -44,14 +49,26 @@ const venusMat = new THREE.MeshLambertMaterial({
     map : loader.load('textures/venus.jpg')
 });
 const venus = new THREE.Mesh( venusGeo, venusMat );
-venus.position.x = 10.5;
+const venusPivot = new THREE.Object3D();
+venus.position.x = sunRadius + earthAU * 0.72;
+venusPivot.add(venus);
+venusPivot.rotation.z = THREE.MathUtils.degToRad(3.4);
 
 // ------ Earth ------
-
+const earthGeo = new THREE.SphereGeometry(1, 32,32);
+const earthMat = new THREE.MeshLambertMaterial({
+    map : loader.load('textures/earth.jpg')
+});
+const earth = new THREE.Mesh(earthGeo, earthMat);
+const earthPivot = new THREE.Object3D();
+earth.position.x = sunRadius + earthAU * 1.0; 
+earthPivot.add(earth);
+earthPivot.rotation.z = THREE.MathUtils.degToRad(0); 
 
 scene.add(sun);
-scene.add(mercury);
-scene.add(venus);
+scene.add(mercuryPivot);
+scene.add(venusPivot);
+scene.add(earthPivot);
 
 
 window.addEventListener('resize', () => {
@@ -64,10 +81,19 @@ window.addEventListener('resize', () => {
    renderer.setSize(width, height);
 });
 
+
 function animate(){
 
     sun.rotation.y += 0.01; 
-    mercury.rotation.y = 0.01;
+
+    mercury.rotation.y += 0.001;
+    mercuryPivot.rotation.y += 0.02;
+
+    venus.rotation.y -= 0.0004;
+    venusPivot.rotation.y += 0.012;
+
+    earth.rotation.y += 0.01;
+    earthPivot.rotation.y += 0.01;
 
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
