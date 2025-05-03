@@ -9,8 +9,10 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-const light = new THREE.AmbientLight( 0xffffff );
-scene.add( light );
+const sunLight = new THREE.AmbientLight( 0xffffff, 2, 0);
+sunLight.position.set(0, 0, 0);
+sunLight.castShadow = true;
+scene.add( sunLight );
 
 const sunGeometry = new THREE.SphereGeometry();
 const loader = new THREE.TextureLoader();
