@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { ThreeMFLoader } from 'three/examples/jsm/Addons.js';
 
 
 const scene = new THREE.Scene();
@@ -65,10 +66,22 @@ earth.position.x = sunRadius + earthAU * 1.0;
 earthPivot.add(earth);
 earthPivot.rotation.z = THREE.MathUtils.degToRad(0); 
 
+// --- Moon ---
+const moonGeo = new THREE.SphereGeometry(0.25, 32,32);
+const moonMat = new THREE.MeshLambertMaterial({
+    map: loader.load('textures/moon.jpg')
+});
+const moon = new THREE.Mesh(moonGeo, moonMat);
+moon.position.x = 2;
+const moonPivot = new THREE.Object3D();
+moonPivot.add(moon);
+
+
 scene.add(sun);
 scene.add(mercuryPivot);
 scene.add(venusPivot);
 scene.add(earthPivot);
+earth.add(moonPivot);
 
 
 window.addEventListener('resize', () => {
@@ -94,6 +107,9 @@ function animate(){
 
     earth.rotation.y += 0.01;
     earthPivot.rotation.y += 0.01;
+
+    moon.rotation.y += 0.01; 
+    moonPivot.rotation.y += 0.01;
 
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
