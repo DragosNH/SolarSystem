@@ -2,17 +2,22 @@ import * as THREE from 'three';
 import { ThreeMFLoader } from 'three/examples/jsm/Addons.js';
 
 
+const loader = new THREE.TextureLoader();
+
+// ****** Scene ******
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.set(0,0,30);
+scene.background = loader.load('textures/stars.jpg');
 
+// ****** Renderer ******
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 document.body.appendChild(renderer.domElement);
 
-
+// *** Sun light ***
 const sunLight = new THREE.PointLight( 0xffffff, 30, 1000);
 sunLight.position.set(0, 0, 0);
 sunLight.castShadow = true;
@@ -21,9 +26,9 @@ scene.add( sunLight );
 const ambient = new THREE.AmbientLight(0xffffff, 0.1);
 scene.add(ambient);
 
+
 // ------ Sun ------
 const sunGeometry = new THREE.SphereGeometry(5, 32, 32);
-const loader = new THREE.TextureLoader();
 const sunMaterial = new THREE.MeshBasicMaterial({
     map: loader.load('textures/sun.jpg')
 });
@@ -76,12 +81,25 @@ moon.position.x = 2;
 const moonPivot = new THREE.Object3D();
 moonPivot.add(moon);
 
+// ------ Mars ------
+const marsGeo = new THREE.SphereGeometry(0.53, 32, 32);
+const marsMat = new THREE.MeshLambertMaterial({
+    map: loader.load('textures/mars.jpg')
+});
+const mars = new THREE.Mesh(marsGeo, marsMat);
+mars.position.x = 5 + 13.5 * 1.52;
+const marsPivot = new THREE.Object3D();
+marsPivot.add(mars);
+marsPivot.rotation.z = THREE.MathUtils.degToRad(1.85);
+
+
 
 scene.add(sun);
 scene.add(mercuryPivot);
 scene.add(venusPivot);
 scene.add(earthPivot);
 earth.add(moonPivot);
+scene.add(marsPivot);
 
 
 window.addEventListener('resize', () => {
@@ -110,6 +128,10 @@ function animate(){
 
     moon.rotation.y += 0.01; 
     moonPivot.rotation.y += 0.01;
+
+    mars.rotation.y += 0.008;
+    marsPivot.rotation.y += 0.007;
+
 
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
