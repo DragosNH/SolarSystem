@@ -9,6 +9,17 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
+const light = new THREE.AmbientLight( 0xffffff );
+scene.add( light );
+
+const sunGeometry = new THREE.SphereGeometry();
+const loader = new THREE.TextureLoader();
+const sunMaterial = new THREE.MeshLambertMaterial({
+    map: loader.load('textures/sun.jpg')
+});
+const sun = new THREE.Mesh(sunGeometry, sunMaterial);
+
+scene.add(sun);
 
 
 window.addEventListener('resize', () => {
@@ -23,7 +34,7 @@ window.addEventListener('resize', () => {
 
 function animate(){
 
-
+    sun.rotation.y += 0.01; 
 
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
