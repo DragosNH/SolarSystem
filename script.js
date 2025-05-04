@@ -143,6 +143,19 @@ uranusPivot.rotation.z = THREE.MathUtils.degToRad(0.77);
 uranus.rotation.z = THREE.MathUtils.degToRad(97.8);
 
 
+// ------ Neptune ------
+const neptuneGeo = new THREE.SphereGeometry(1.8, 32, 32);
+const neptuneMat = new THREE.MeshLambertMaterial({
+    map: loader.load('textures/neptune.jpg')
+});
+const neptune = new THREE.Mesh(neptuneGeo, neptuneMat);
+const neptunePivot = new THREE.Object3D();
+neptunePivot.add(neptune);
+neptune.position.x = sunRadius + earthAU * 30.07;
+neptunePivot.rotation.z = THREE.MathUtils.degToRad(1.77);
+neptune.rotation.z = THREE.MathUtils.degToRad(28.3);
+
+
 // ------------------------------------- End of solar system objects -------------------------------------
 
 // ------ Objects added to the scene ------
@@ -156,6 +169,7 @@ scene.add(jupiterPivot);
 scene.add(saturnPivot);
 saturn.add(saturnRingPivot);
 scene.add(uranusPivot);
+scene.add(neptunePivot);
 
 
 // Made the scene responsive 
@@ -198,6 +212,10 @@ function animate() {
 
     uranus.rotation.y += 0.012;
     uranusPivot.rotation.y += 0.0005;
+
+    neptune.rotation.y += 0.01;
+    neptunePivot.rotation.y += 0.0003;
+
 
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
