@@ -6,8 +6,8 @@ const loader = new THREE.TextureLoader();
 
 // ****** Scene ******
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.set(0, 0, 40);
+const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.set(0, 0, 35);
 scene.background = loader.load('textures/stars.jpg');
 
 // ****** Renderer ******
@@ -26,12 +26,15 @@ scene.add(sunLight);
 const ambient = new THREE.AmbientLight(0xffffff, 0.1);
 scene.add(ambient);
 
+
 // ------------------------------------- Solar system objects -------------------------------------
 
 // ------ Sun ------
 const sunGeometry = new THREE.SphereGeometry(8, 32, 32);
 const sunMaterial = new THREE.MeshBasicMaterial({
-    map: loader.load('textures/sun.jpg')
+    map: loader.load('textures/sun.jpg'),
+    emissive: new THREE.Color(0xffffaa),
+    emissiveIntensity: 5
 });
 const sun = new THREE.Mesh(sunGeometry, sunMaterial);
 const sunRadius = 8;
