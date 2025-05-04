@@ -6,8 +6,8 @@ const loader = new THREE.TextureLoader();
 
 // ****** Scene ******
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.set(0,0,30);
+const camera = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.set(0,0,40);
 scene.background = loader.load('textures/stars.jpg');
 
 // ****** Renderer ******
@@ -28,12 +28,12 @@ scene.add(ambient);
 
 
 // ------ Sun ------
-const sunGeometry = new THREE.SphereGeometry(5, 32, 32);
+const sunGeometry = new THREE.SphereGeometry(8, 32, 32);
 const sunMaterial = new THREE.MeshBasicMaterial({
     map: loader.load('textures/sun.jpg')
 });
 const sun = new THREE.Mesh(sunGeometry, sunMaterial);
-const sunRadius = 5;
+const sunRadius = 8;
 const earthAU = 13.5;
 
 // ------ Mercury ------
@@ -87,10 +87,21 @@ const marsMat = new THREE.MeshLambertMaterial({
     map: loader.load('textures/mars.jpg')
 });
 const mars = new THREE.Mesh(marsGeo, marsMat);
-mars.position.x = 5 + 13.5 * 1.52;
+mars.position.x = sunRadius + 13.5 * 1.52;
 const marsPivot = new THREE.Object3D();
 marsPivot.add(mars);
 marsPivot.rotation.z = THREE.MathUtils.degToRad(1.85);
+
+// ------ Jupiter ------
+const jupiterGeo = new THREE.SphereGeometry(3, 32, 32);
+const jupiterMat = new THREE.MeshLambertMaterial({
+    map : loader.load('textures/jupiter.jpg')
+});
+const jupiter = new THREE.Mesh(jupiterGeo, jupiterMat);
+jupiter.position.x = sunRadius + earthAU * 5.2;
+const jupiterPivot = new THREE.Object3D();
+jupiterPivot.add(jupiter);
+jupiterPivot.rotation.z = THREE.MathUtils.degToRad(1.3);
 
 
 
@@ -100,6 +111,7 @@ scene.add(venusPivot);
 scene.add(earthPivot);
 earth.add(moonPivot);
 scene.add(marsPivot);
+scene.add(jupiterPivot);
 
 
 window.addEventListener('resize', () => {
@@ -132,6 +144,8 @@ function animate(){
     mars.rotation.y += 0.008;
     marsPivot.rotation.y += 0.007;
 
+    jupiter.rotation.y += 0.02;
+    jupiterPivot.rotation.y += 0.002;
 
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
