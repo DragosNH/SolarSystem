@@ -129,6 +129,20 @@ saturnRing.rotation.x = Math.PI / 2;
 saturn.position.x = sunRadius + earthAU * 9.58;
 saturn.rotation.z = THREE.MathUtils.degToRad(26.7);
 
+
+// ------ Uranus ------
+const uranusGeo = new THREE.SphereGeometry(1.9, 32, 32);
+const uranusMat = new THREE.MeshLambertMaterial({
+    map: loader.load('textures/uranus.jpg')
+});
+const uranus = new THREE.Mesh(uranusGeo, uranusMat);
+const uranusPivot = new THREE.Object3D();
+uranusPivot.add(uranus);
+uranus.position.x = sunRadius + earthAU * 19.18;
+uranusPivot.rotation.z = THREE.MathUtils.degToRad(0.77);
+uranus.rotation.z = THREE.MathUtils.degToRad(97.8);
+
+
 // ------------------------------------- End of solar system objects -------------------------------------
 
 // ------ Objects added to the scene ------
@@ -141,6 +155,8 @@ scene.add(marsPivot);
 scene.add(jupiterPivot);
 scene.add(saturnPivot);
 saturn.add(saturnRingPivot);
+scene.add(uranusPivot);
+
 
 // Made the scene responsive 
 window.addEventListener('resize', () => {
@@ -180,6 +196,8 @@ function animate() {
     saturn.rotation.y += 0.015;
     saturnPivot.rotation.y += 0.001;
 
+    uranus.rotation.y += 0.012;
+    uranusPivot.rotation.y += 0.0005;
 
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
