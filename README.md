@@ -23,7 +23,7 @@ This a small project that represents the solar system, it may not be an exact re
 
 ## Will I optimise this project?
 
-A vesion 2 is avalable [here](https://github.com/DragosNH/SolarSystem_2.0)
+A vesion 2 is avalable [here](https://github.com/DragosNH/SolarSystem_2.0).
 
 ## View the final result:
-I added the project on codepen in order to be visible on [codepen](https://codepen.io/Ench-Drgs/pen/azOPdRQ)
+I added the project on codepen in order to be visible, you can click [here](https://codepen.io/Ench-Drgs/pen/azOPdRQ) in order to see it.
